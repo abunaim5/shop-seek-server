@@ -30,13 +30,16 @@ async function run() {
 
         // products related apis
         app.get('/products', async (req, res) => {
-            const products = await productCollection.find().toArray();
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+            const skip = page * size;
+            const products = await productCollection.find().skip(skip).limit(size).toArray();
             res.send(products);
         });
 
         app.get('/product-count', async (req, res) => {
             const count = await productCollection.estimatedDocumentCount();
-            res.send({count});
+            res.send({ count });
         });
 
         // Send a ping to confirm a successful connection
