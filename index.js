@@ -36,7 +36,8 @@ async function run() {
             const skip = page * size;
 
             // sort related queries
-            const sortByPrice = req.query.sortBy;
+            const sortByPrice = req.query.sortPrice;
+            const sortByDate = req.query.sortDate;
 
             const query = {};
             let options = {
@@ -44,6 +45,8 @@ async function run() {
                 limit: size,
                 sort: {}
             };
+
+            // price related sorting
             if (sortByPrice === 'Default') {
                 options.sort = {}
             } else if (sortByPrice === 'Low to High') {
@@ -52,7 +55,14 @@ async function run() {
                 options.sort.price = -1;
             }
 
-            console.log(sortByPrice);
+            // date related sorting
+            if (sortByDate === 'Newest') {
+                options.sort.createdAt = -1;
+            } else if (sortByDate === 'Oldest') {
+                options.sort.createdAt = 1;
+            }
+
+            console.log(sortByDate);
             const products = await productCollection.find(query, options).toArray();
             res.send(products);
         });
