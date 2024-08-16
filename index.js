@@ -35,11 +35,24 @@ async function run() {
             const size = parseInt(req.query.size);
             const skip = page * size;
 
+            // filter related queries
+            const brand = req.query.brand;
+
             // sort related queries
             const sortByPrice = req.query.sortPrice;
             const sortByDate = req.query.sortDate;
 
-            const query = {};
+            let query = {};
+
+            // filter by brand
+            if (brand) {
+                if (brand === 'All') {
+                    query = {};
+                } else {
+                    query.brand = brand;
+                }
+            };
+
             let options = {
                 skip: skip,
                 limit: size,
