@@ -30,10 +30,30 @@ async function run() {
 
         // products related apis
         app.get('/products', async (req, res) => {
+            // pagination related queries
             const page = parseInt(req.query.page);
             const size = parseInt(req.query.size);
             const skip = page * size;
-            const products = await productCollection.find().skip(skip).limit(size).toArray();
+
+            // sort related queries
+            const sortByPrice = req.query.sortBy;
+
+            const query = {};
+            let options = {
+                skip: skip,
+                limit: size,
+                sort: {}
+            };
+            if (sortByPrice === 'Default') {
+                options.sort = {}
+            } else if (sortByPrice === 'Low to High') {
+                options.sort.price = 1;
+            } else if (sortByPrice === 'High to Low') {
+                options.sort.price = -1;
+            }
+
+            console.log(sortByPrice);
+            const products = await productCollection.find(query, options).toArray();
             res.send(products);
         });
 
