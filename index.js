@@ -37,6 +37,7 @@ async function run() {
 
             // filter related queries
             const brand = req.query.brand;
+            const category = req.query.category;
 
             // sort related queries
             const sortByPrice = req.query.sortPrice;
@@ -50,6 +51,15 @@ async function run() {
                     query = {};
                 } else {
                     query.brand = brand;
+                }
+            };
+
+            // filter by category
+            if (category) {
+                if (category === 'All') {
+                    query = {};
+                } else {
+                    query.category = category;
                 }
             };
 
