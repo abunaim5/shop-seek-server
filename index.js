@@ -40,6 +40,7 @@ async function run() {
             const category = req.query.category;
             const minPrice = req.query.min_price;
             const maxPrice = req.query.max_price;
+            console.log(brand);
 
             // sort related queries
             const sortByPrice = req.query.sortPrice;
@@ -48,21 +49,13 @@ async function run() {
             let query = {};
 
             // filter by brand
-            if (brand) {
-                if (brand === 'All') {
-                    query = {};
-                } else {
-                    query.brand = brand;
-                }
+            if (brand && brand !== 'All') {
+                query.brand = brand;
             };
 
             // filter by category
-            if (category) {
-                if (category === 'All') {
-                    query = {};
-                } else {
-                    query.category = category;
-                }
+            if (category && category !== 'All') {
+                query.category = category;
             };
 
             // filter by min and max price
