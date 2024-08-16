@@ -35,6 +35,9 @@ async function run() {
             const size = parseInt(req.query.size);
             const skip = page * size;
 
+            // search related queries
+            const search = req.query.search;
+
             // filter related queries
             const brand = req.query.brand;
             const category = req.query.category;
@@ -47,6 +50,14 @@ async function run() {
             const sortByDate = req.query.sortDate;
 
             let query = {};
+            
+            // search by product name
+            if (search) {
+                query.name = {
+                    $regex: search,
+                    $options: 'i'
+                }
+            }
 
             // filter by brand
             if (brand && brand !== 'All') {
