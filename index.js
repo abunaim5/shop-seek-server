@@ -38,6 +38,8 @@ async function run() {
             // filter related queries
             const brand = req.query.brand;
             const category = req.query.category;
+            const minPrice = req.query.min_price;
+            const maxPrice = req.query.max_price;
 
             // sort related queries
             const sortByPrice = req.query.sortPrice;
@@ -63,6 +65,22 @@ async function run() {
                 }
             };
 
+            // filter by min and max price
+            if (minPrice && maxPrice) {
+                query.price = {
+                    $gte: parseFloat(minPrice),
+                    $lte: parseFloat(maxPrice)
+                };
+            } else if (minPrice) {
+                query.price = {
+                    $gte: parseFloat(minPrice)
+                };
+            } else if (maxPrice) {
+                query.price = {
+                    $lte: parseFloat(maxPrice)
+                };
+            }
+
             let options = {
                 skip: skip,
                 limit: size,
@@ -85,7 +103,6 @@ async function run() {
                 options.sort.createdAt = 1;
             }
 
-            console.log(sortByDate);
             const products = await productCollection.find(query, options).toArray();
             res.send(products);
         });
