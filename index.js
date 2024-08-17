@@ -111,6 +111,19 @@ async function run() {
             res.send(products);
         });
 
+        app.get('/popular-products', async(req, res) => {
+            const query = {}
+            const options = {
+                limit: 6,
+                sort: {
+                    rating: -1
+                }
+            }
+
+            const popularProducts = await productCollection.find(query, options).toArray();
+            res.send(popularProducts);
+        });
+
         app.get('/product-count', async (req, res) => {
             const count = await productCollection.estimatedDocumentCount();
             res.send({ count });
