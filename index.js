@@ -114,7 +114,7 @@ async function run() {
             const options = {
                 limit: 6,
                 sort: {
-                    rating: -1
+                    ratings: -1
                 }
             }
 
